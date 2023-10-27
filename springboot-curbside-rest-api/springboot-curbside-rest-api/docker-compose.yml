@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: curbsidedb
+    networks:
+      springboot-mysql-net:
+
+  springboot-curbside-rest-api:
+    container_name: apiV1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    networks:
+      springboot-mysql-net:
+    restart: on-failure
+networks:
+  springboot-mysql-net:
